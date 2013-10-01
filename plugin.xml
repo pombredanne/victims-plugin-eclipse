@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+  <extension point="org.eclipse.ui.menus">
+    <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+      <command commandId="com.redhat.victims.plugin.eclipse.victimsscan"
+        label="Victims Scan" style="push">
+      </command>
+    </menuContribution>
+  </extension>
+  <extension point="org.eclipse.ui.commands">
+    <command defaultHandler="com.redhat.victims.plugin.eclipse.handler.ScanHandler"
+      id="com.redhat.victims.plugin.eclipse.victimsscan" name="VictimsScan">
+    </command>
+  </extension>
+
+</plugin> 
