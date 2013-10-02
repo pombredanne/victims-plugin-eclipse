@@ -47,7 +47,7 @@ public class VictimScan {
 	public VictimScan(Map<String, String> set, ArrayList<IPath> paths)
 			throws VictimsException {
 		this.paths = paths;
-		
+
 		/* Set up context */
 		ctx = new ExecutionContext();
 		ctx.setSettings(new Settings());
@@ -87,7 +87,7 @@ public class VictimScan {
 		/* Create results cache & victims DB */
 		VictimsResultCache cache = new VictimsResultCache();
 		ctx.setCache(cache);
-
+		driver.getClass();
 		VictimsDBInterface db = VictimsDB.db();
 		ctx.setDatabase(db);
 
