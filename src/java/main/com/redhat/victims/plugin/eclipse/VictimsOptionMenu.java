@@ -100,13 +100,13 @@ public class VictimsOptionMenu extends JFrame {
 		contentPane.add(lblJdbcPass);
 		
 		baseUrlTxt = new JTextField();
-		baseUrlTxt.setText("https://victi.ms");
+		baseUrlTxt.setText("http://www.victi.ms/");
 		baseUrlTxt.setBounds(115, 12, 160, 19);
 		contentPane.add(baseUrlTxt);
 		baseUrlTxt.setColumns(10);
 		
 		entryPointTxt = new JTextField();
-		entryPointTxt.setText("/service");
+		entryPointTxt.setText("service/");
 		entryPointTxt.setBounds(115, 39, 160, 19);
 		contentPane.add(entryPointTxt);
 		entryPointTxt.setColumns(10);
