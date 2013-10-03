@@ -85,6 +85,21 @@
 					</includes>
 				</configuration>
 			</plugin>
+			<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.4</version>
+                <configuration>
+                    <descriptionTemplate>${basedir}/src/license/header.ftl</descriptionTemplate>
+                        <verbose>false</verbose>
+                    <licenseName>agpl_v3</licenseName>
+                    <includes>
+                        <include>**/main/**/*</include>
+                        <include>**/test/**/mock/*</include>
+                    </includes>
+                </configuration>
+            </plugin>
+			
 		</plugins>
 
 	</build>
