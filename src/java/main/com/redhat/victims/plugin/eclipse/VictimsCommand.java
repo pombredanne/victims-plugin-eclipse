@@ -30,16 +30,30 @@ import org.eclipse.core.runtime.Status;
 import com.redhat.victims.VictimsRecord;
 import com.redhat.victims.VictimsScanner;
 import com.redhat.victims.database.VictimsDBInterface;
-
+/**
+ * callable class to implement scanning of jar files
+ * against a database of known vulnerabilities.
+ * 
+ * @author kurt, gmurphy
+ */
 public class VictimsCommand implements Callable<FileStub> {
 	private FileStub jar;
 	private ExecutionContext ctx;
 
+	/**
+	 * Initialises the victimscommand!
+	 * @param ctx Context for execution
+	 * @param jar Dependency to scan against database
+	 */
 	VictimsCommand(ExecutionContext ctx, FileStub jar) {
 		this.jar = jar;
 		this.ctx = ctx;
 	}
 
+	/**
+	 * Processes a FileStub (jar) and compares it to a database of
+	 * known vulnerabilities
+	 */
 	public FileStub call() throws Exception {
 		assert(ctx != null);
 		ctx.getLog().log(new Status(Status.INFO, Activator.PLUGIN_ID,
@@ -47,7 +61,7 @@ public class VictimsCommand implements Callable<FileStub> {
 		VictimsDBInterface db = ctx.getDatabase();
 		String dependency = jar.getFile().getAbsolutePath();
 
-		// fingerprint
+		// compare fingerprint to database
 		if (ctx.isEnabled(Settings.FINGERPRINT)) {
 			
 			for (VictimsRecord vr : VictimsScanner.getRecords(dependency)) {
@@ -59,7 +73,7 @@ public class VictimsCommand implements Callable<FileStub> {
 			}
 		}
 
-		// metadata
+		// compare metadata to database
 		if (ctx.isEnabled(Settings.METADATA)){
             HashMap<String,String> gav = new HashMap<String,String>();
             gav.put("title", jar.getTitle());

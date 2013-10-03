@@ -25,7 +25,7 @@ import java.util.ListResourceBundle;
 
 /**
  * Basic resource bundle for messages and formating.
- * @author gmurphy
+ * @author kurt, gmurphy
  */
 public class Resources extends ListResourceBundle  {
 
@@ -67,6 +67,11 @@ public class Resources extends ListResourceBundle  {
 
     public static final String ERR_VULNERABLE_CVE_URL       = "ERR_VULNERABLE_CVE_URL";
     
+    /**
+     * Notifier that there were no vulnerabilities detected during scanning
+     */
+    public static final String NO_VULN_DETECTED			  = "NO_VULN_DETECTED";
+    
     @Override
     protected Object[][] getContents() {
         return new Object[][]{
@@ -77,7 +82,8 @@ public class Resources extends ListResourceBundle  {
             { INFO_SETTINGS_HEADING,        "victims-ant settings"                                         },
             { ERR_INVALID_MODE,             "Invalid mode '%s' for the '%s' setting. Valid options are %s. "    },
             { ERR_SETTING_MISSING,          "Required setting '%s' is missing. "                                },
-            { INFO_UPDATES,                 "Last update was on %s. Checking for new vulnerabilities at %s"      }
+            { INFO_UPDATES,                 "Last update was on %s. Checking for new vulnerabilities at %s"      },
+            { NO_VULN_DETECTED, 			"No vulnerabilities were detected during the scan. "}
         };
     }
 }

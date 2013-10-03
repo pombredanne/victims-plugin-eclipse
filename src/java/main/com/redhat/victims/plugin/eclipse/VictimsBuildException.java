@@ -23,7 +23,15 @@ import com.redhat.victims.VictimsException;
  * #L%
  */
 
-
+/**
+ * Almost redundant exception class.
+ * TODO: This should probably extend
+ * org.eclipse.core.commands.ExecutionException and it should
+ * be used to exit the program upon finding vulnerabilities/errors.
+ * 
+ * @author kurt
+ *
+ */
 public class VictimsBuildException extends VictimsException {
 
 	private static final long serialVersionUID = -3411399027684620634L;

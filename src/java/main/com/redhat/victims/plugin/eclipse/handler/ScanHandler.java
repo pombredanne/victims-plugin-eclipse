@@ -95,7 +95,7 @@ public class ScanHandler extends AbstractHandler implements SettingsCallback {
 			log.log(new Status(Status.INFO, Activator.PLUGIN_ID, setting));
 		}
 		
-		/* Begin scan */
+		/* Run the scan */
 		VictimScan vs = new VictimScan(settings, paths);
 		vs.execute();
 	}

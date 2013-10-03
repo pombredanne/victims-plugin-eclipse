@@ -22,9 +22,15 @@ package com.redhat.victims.plugin.eclipse;
  */
 
 import java.util.HashSet;
-
 import com.redhat.victims.VictimsException;
 
+/**
+ * Exception for handling vulnerabilities.
+ * Holds details of a dependency and formats
+ * some error messages nicely.
+ * 
+ * @author kurt, gmurphy
+ */
 public class VulnerableDependencyException extends VictimsException {
 
 	/**

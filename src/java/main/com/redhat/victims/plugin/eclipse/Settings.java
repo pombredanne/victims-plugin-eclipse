@@ -33,7 +33,7 @@ import com.redhat.victims.VictimsException;
  * Configuration settings are defined and stored by this class. All settings of
  * the VictimsTask are validated and initialized with defaults from this class.
  *
- * @author gmurphy
+ * @author kurt, gmurphy
  */
 public final class Settings {
     /*

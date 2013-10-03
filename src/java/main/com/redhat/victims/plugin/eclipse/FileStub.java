@@ -34,15 +34,16 @@ import java.util.jar.Manifest;
 import java.util.jar.Attributes;
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.codec.digest.*;
+import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.apache.commons.io.IOUtils;
 
 import com.redhat.victims.VictimsException;
 import com.redhat.victims.fingerprint.Metadata;
 
 /**
- * Holds dependency metadata for caching
- * 
+ * Holds/creates dependency metadata.
+ * Also attempts to mimic some of mavens
+ * functions in gathering metadata.
  * @author kurt
  */
 public class FileStub {
@@ -93,7 +94,7 @@ public class FileStub {
 			byte[] buffer = new byte[1024];
 
 			MessageDigest mda = MessageDigest
-					.getInstance("MD5");
+					.getInstance(MessageDigestAlgorithms.MD5);
 			int numRead;
 			do {
 				numRead = fis.read(buffer);
@@ -101,7 +102,7 @@ public class FileStub {
 					mda.update(buffer, 0, numRead);
 				}
 			} while (numRead != -1);
-			return name + Hex.encodeHex(mda.digest()).toString();
+			return name + Hex.encodeHexString(mda.digest());
 
 		} catch (NoSuchAlgorithmException e) {
 			throw new VictimsException(String.format("Could not hash file: %s",

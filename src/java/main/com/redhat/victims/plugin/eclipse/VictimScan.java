@@ -1,5 +1,5 @@
 package com.redhat.victims.plugin.eclipse;
- 
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +15,6 @@ import java.util.concurrent.Future;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Status;
-import org.apache.commons.io.FileUtils;
 import org.h2.Driver;
 
 import com.redhat.victims.VictimsConfig;
@@ -24,6 +23,7 @@ import com.redhat.victims.VictimsResultCache;
 import com.redhat.victims.database.VictimsDB;
 import com.redhat.victims.database.VictimsDBInterface;
 import com.redhat.victims.plugin.eclipse.Settings;
+
 /**
  * Provides the functionality to scan java libraries for known vulnerabilities.
  * Very similar to the Ant library com.redhat.victims.plugin.ant
@@ -35,7 +35,7 @@ public class VictimScan {
 	public ExecutionContext ctx;
 	public ILog log;
 	private ArrayList<IPath> paths;
-	
+
 	/**
 	 * 
 	 * @param set
@@ -97,6 +97,11 @@ public class VictimScan {
 
 	}
 
+	/**
+	 * Controls the scanning of extracted dependencies from
+	 * the eclipse project.
+	 * @throws VictimsBuildException
+	 */
 	public void execute() throws VictimsBuildException {
 		VictimsResultCache cache = ctx.getCache();
 		int cores = Runtime.getRuntime().availableProcessors();
@@ -126,8 +131,7 @@ public class VictimScan {
 
 					/* Report vulnerabilities */
 					if (!cves.isEmpty()) {
-						VulnerableDependencyException err
-								= new VulnerableDependencyException(
+						VulnerableDependencyException err = new VulnerableDependencyException(
 								fs, Settings.FINGERPRINT, cves);
 						log.log(new Status(Status.INFO, Activator.PLUGIN_ID,
 								err.getLogMessage()));
@@ -142,7 +146,7 @@ public class VictimScan {
 				// Process dependencies that haven't been cached
 				Callable<FileStub> worker = new VictimsCommand(ctx, fs);
 				jobs.add(executor.submit(worker));
-			} 
+			}
 			executor.shutdown();
 
 			// Check the results
@@ -161,6 +165,7 @@ public class VictimScan {
 
 					Throwable cause = e.getCause();
 					if (cause instanceof VulnerableDependencyException) {
+						/* Vulnerability detected, create the exception and set up cache */
 						VulnerableDependencyException vbe = (VulnerableDependencyException) cause;
 						cache.add(vbe.getId(), vbe.getVulnerabilites());
 
@@ -187,12 +192,13 @@ public class VictimScan {
 				executor.shutdown();
 			}
 		}
+		log.log(new Status(Status.INFO, Activator.PLUGIN_ID, TextUI.fmt(Resources.NO_VULN_DETECTED)));
 	}
 
 	/**
 	 * Updates the database according to the given configuration
 	 * 
-	 * @param ctx
+	 * @param ctx context setting for this execution of the scan
 	 * @throws VictimsException
 	 */
 	public void updateDatabase(ExecutionContext ctx) throws VictimsException {
