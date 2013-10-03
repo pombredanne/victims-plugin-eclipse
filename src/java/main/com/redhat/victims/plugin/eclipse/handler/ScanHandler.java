@@ -2,7 +2,6 @@ package com.redhat.victims.plugin.eclipse.handler;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -64,7 +63,8 @@ public class ScanHandler extends AbstractHandler implements SettingsCallback {
 				for (IClasspathEntry entry : cp){
 					IPath path = entry.getPath();
 					String ext = path.getFileExtension();
-					log.log(new Status(Status.INFO, Activator.PLUGIN_ID, path.getFileExtension()));
+					//This condition seems weird but if it's the other way
+					//around you open yourself up to null pointer exceptions!
 					if (JAR_EXT.equals(ext)){					
 						paths.add(path);
 					}
@@ -89,11 +89,6 @@ public class ScanHandler extends AbstractHandler implements SettingsCallback {
 	public void callbackSettings() throws VictimsException {
 		HashMap<String, String> settings = (HashMap<String, String>) optionMenu
 				.getMenu().getSettings();
-		/* logging */
-		Collection<String> logSet = settings.values();
-		for (String setting : logSet) {
-			log.log(new Status(Status.INFO, Activator.PLUGIN_ID, setting));
-		}
 		
 		/* Run the scan */
 		VictimScan vs = new VictimScan(settings, paths);
