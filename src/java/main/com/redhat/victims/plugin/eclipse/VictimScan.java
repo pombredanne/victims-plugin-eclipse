@@ -171,7 +171,9 @@ public class VictimScan {
 
 						log.log(new Status(Status.INFO, Activator.PLUGIN_ID,
 								vbe.getLogMessage()));
-
+						/* This should end the scan on finding a vulnerability
+						 * However VictimsBuildException needs some work! 
+						 */
 						if (vbe.isFatal(ctx)) {
 							throw new VictimsBuildException(
 									vbe.getErrorMessage());

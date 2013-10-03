@@ -206,8 +206,6 @@ public class VictimsOptionMenu extends JFrame {
 
 			settingsHandler.callbackSettings();
 		} catch (NullPointerException np){
-			np.printStackTrace();
-		//	log.log(0, np.getMessage());
 			JOptionPane.showMessageDialog(this, "Please make sure all fields are filled.");
 		} catch (VictimsException ve){
 			//The exception train is getting kind of bad now :(
