@@ -8,5 +8,5 @@ import com.redhat.victims.VictimsException;
  */
 public interface SettingsCallback {
 
-	void callbackSettings() throws VictimsException;
+	int callbackSettings() throws VictimsException;
 }
