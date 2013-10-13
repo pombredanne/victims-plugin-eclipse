@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.redhat.victims.plugin.eclipse</groupId>
 	<artifactId>victims-plugin-eclipse</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 	<name>victims-plugin-eclipse</name>
 	<packaging>eclipse-plugin</packaging>
     <description>A java library providing eclipse an interface into the Victims Project</description>

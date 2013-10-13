@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: com.redhat.victims.plugin.eclipse
 Bundle-SymbolicName: victims-plugin-eclipse;singleton:=true
-Bundle-Version: 0.0.1
+Bundle-Version: 1.0.0
 Bundle-Activator: com.redhat.victims.plugin.eclipse.Activator
 Bundle-Vendor: REDHAT
 Require-Bundle: org.eclipse.ui,
