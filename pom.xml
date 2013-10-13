@@ -4,9 +4,23 @@
 	<groupId>com.redhat.victims.plugin.eclipse</groupId>
 	<artifactId>victims-plugin-eclipse</artifactId>
 	<version>0.0.1</version>
+	<name>victims-plugin-eclipse</name>
 	<packaging>eclipse-plugin</packaging>
-
+    <description>A java library providing eclipse an interface into the Victims Project</description>
+	<organization>
+		<name>The Victims Project</name>
+		<url>http://victi.ms</url>
+	</organization>
+	<inceptionYear>2013</inceptionYear>
+	<licenses>
+		<license>
+			<name>GNU Affero General Public License, Version 3</name>
+			<url>http://www.gnu.org/licenses/agp1-3.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<tycho-version>0.18.1</tycho-version>
 	</properties>
 
