@@ -35,7 +35,12 @@ public class VictimScan {
 	public ExecutionContext ctx;
 	public ILog log;
 	private ArrayList<IPath> paths;
-
+	/* Arbitrary number to signify a vulnerability was detected 
+	 * Mainly used for testing purposes.
+	*/
+	public static int VULN_DETECTED = 9996667;
+	/* true after a single vulnerability is detected */
+	private static Boolean vulnsDetected = false;
 	/**
 	 * 
 	 * @param set
@@ -100,7 +105,7 @@ public class VictimScan {
 	/**
 	 * Controls the scanning of extracted dependencies from the eclipse project.
 	 */
-	public void execute() {
+	public int execute() {
 		VictimsResultCache cache = ctx.getCache();
 		int cores = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = null;
@@ -133,6 +138,11 @@ public class VictimScan {
 								fs, Settings.FINGERPRINT, cves);
 						log.log(new Status(Status.INFO, Activator.PLUGIN_ID,
 								err.getLogMessage()));
+						if(err.isFatal(ctx)){
+							return VULN_DETECTED;
+						} else {
+							vulnsDetected = true;
+						}
 					}
 					continue;
 				}
@@ -168,7 +178,12 @@ public class VictimScan {
 
 						log.log(new Status(Status.INFO, Activator.PLUGIN_ID,
 								vbe.getLogMessage()));
-
+						if (vbe.isFatal(ctx)){
+							return VULN_DETECTED;
+						} else {
+							vulnsDetected = true;
+						}
+						
 					} else {
 						throw new VictimsException(cause.getMessage());
 					}
@@ -180,14 +195,19 @@ public class VictimScan {
 				.getLocalizedMessage()));
 			log.log(new Status(Status.ERROR, Activator.PLUGIN_ID, ve
 					.getMessage()));
-			return;
+			return 0;
 		} finally {
 			if (executor != null) {
 				executor.shutdown();
 			}
 		}
-		log.log(new Status(Status.INFO, Activator.PLUGIN_ID, TextUI
-				.fmt(Resources.NO_VULN_DETECTED)));
+		if (vulnsDetected){
+			return VULN_DETECTED;
+		} else {
+			log.log(new Status(Status.INFO, Activator.PLUGIN_ID, TextUI
+					.fmt(Resources.NO_VULN_DETECTED)));
+			return 0;
+		}
 	}
 
 	/**
