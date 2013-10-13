@@ -88,7 +88,7 @@ public class ScanHandler extends AbstractHandler implements SettingsCallback {
 	/**
 	 * Gets the settings entered from the option menu and begins execution of
 	 * the VictimsScan.
-	 * 
+	 * @return 0 if no vulnerabilities detected 9996667 otherwise
 	 * @throws VictimsException
 	 */
 	public int callbackSettings() throws VictimsException {
