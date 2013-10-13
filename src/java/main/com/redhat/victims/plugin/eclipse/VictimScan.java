@@ -98,11 +98,9 @@ public class VictimScan {
 	}
 
 	/**
-	 * Controls the scanning of extracted dependencies from
-	 * the eclipse project.
-	 * @throws VictimsBuildException
+	 * Controls the scanning of extracted dependencies from the eclipse project.
 	 */
-	public void execute() throws VictimsBuildException {
+	public void execute() {
 		VictimsResultCache cache = ctx.getCache();
 		int cores = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = null;
@@ -135,10 +133,6 @@ public class VictimScan {
 								fs, Settings.FINGERPRINT, cves);
 						log.log(new Status(Status.INFO, Activator.PLUGIN_ID,
 								err.getLogMessage()));
-						if (err.isFatal(ctx)) {
-							throw new VictimsBuildException(
-									err.getErrorMessage());
-						}
 					}
 					continue;
 				}
@@ -165,42 +159,42 @@ public class VictimScan {
 
 					Throwable cause = e.getCause();
 					if (cause instanceof VulnerableDependencyException) {
-						/* Vulnerability detected, create the exception and set up cache */
+						/*
+						 * Vulnerability detected, create the exception and set
+						 * up cache
+						 */
 						VulnerableDependencyException vbe = (VulnerableDependencyException) cause;
 						cache.add(vbe.getId(), vbe.getVulnerabilites());
 
 						log.log(new Status(Status.INFO, Activator.PLUGIN_ID,
 								vbe.getLogMessage()));
-						/* This should end the scan on finding a vulnerability
-						 * However VictimsBuildException needs some work! 
-						 */
-						if (vbe.isFatal(ctx)) {
-							throw new VictimsBuildException(
-									vbe.getErrorMessage());
-						}
+
 					} else {
-						throw new VictimsBuildException(e.getCause()
-								.getMessage());
+						throw new VictimsException(cause.getMessage());
 					}
 				}
 			}
-		} catch (VictimsException ve) {
+			// Catches and logs any errors.
+		} catch (VictimsException ve) {	
+			log.log(new Status(Status.ERROR, Activator.PLUGIN_ID, ve
+				.getLocalizedMessage()));
 			log.log(new Status(Status.ERROR, Activator.PLUGIN_ID, ve
 					.getMessage()));
-			throw new VictimsBuildException(ve.getMessage());
-
+			return;
 		} finally {
 			if (executor != null) {
 				executor.shutdown();
 			}
 		}
-		log.log(new Status(Status.INFO, Activator.PLUGIN_ID, TextUI.fmt(Resources.NO_VULN_DETECTED)));
+		log.log(new Status(Status.INFO, Activator.PLUGIN_ID, TextUI
+				.fmt(Resources.NO_VULN_DETECTED)));
 	}
 
 	/**
 	 * Updates the database according to the given configuration
 	 * 
-	 * @param ctx context setting for this execution of the scan
+	 * @param ctx
+	 *            context setting for this execution of the scan
 	 * @throws VictimsException
 	 */
 	public void updateDatabase(ExecutionContext ctx) throws VictimsException {
