@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.JOptionPane;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -32,18 +34,18 @@ import com.redhat.victims.plugin.eclipse.VictimScan;
  */
 public class ScanHandler extends AbstractHandler implements SettingsCallback {
 
-	//Array for all generated library paths
-	private ArrayList<IPath> paths = new ArrayList<IPath>();  
+	// Array for all generated library paths
+	private ArrayList<IPath> paths = new ArrayList<IPath>();
 	private OptionMenuRunnable optionMenu;
 	/* Default log for this plugin */
 	private ILog log = Platform.getLog(Activator.getDefault().getBundle());
 
 	private String JAR_EXT = "jar";
-	
+
 	/**
-	 * Begins the life-cycle of the plugin. Finds the absolute path names of
-	 * all dependencies for a project in eclipse and creates the popup
-	 * menu for settings.
+	 * Begins the life-cycle of the plugin. Finds the absolute path names of all
+	 * dependencies for a project in eclipse and creates the popup menu for
+	 * settings.
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Shell shell = HandlerUtil.getActiveShell(event);
@@ -58,14 +60,16 @@ public class ScanHandler extends AbstractHandler implements SettingsCallback {
 
 			try {
 				IClasspathEntry[] cp = jp.getResolvedClasspath(true);
-				/* Extracts all .jar files from the classpath and adds them to
-				   a list to be passed to VictimScan during the callback*/
-				for (IClasspathEntry entry : cp){
+				/*
+				 * Extracts all .jar files from the classpath and adds them to a
+				 * list to be passed to VictimScan during the callback
+				 */
+				for (IClasspathEntry entry : cp) {
 					IPath path = entry.getPath();
 					String ext = path.getFileExtension();
-					//This condition seems weird but if it's the other way
-					//around you open yourself up to null pointer exceptions!
-					if (JAR_EXT.equals(ext)){					
+					// This condition seems weird but if it's the other way
+					// around you open yourself up to null pointer exceptions!
+					if (JAR_EXT.equals(ext)) {
 						paths.add(path);
 					}
 				}
@@ -84,15 +88,40 @@ public class ScanHandler extends AbstractHandler implements SettingsCallback {
 	/**
 	 * Gets the settings entered from the option menu and begins execution of
 	 * the VictimsScan.
-	 * @throws VictimsException 
+	 * 
+	 * @throws VictimsException
 	 */
-	public void callbackSettings() throws VictimsException {
+	public int callbackSettings() throws VictimsException {
 		HashMap<String, String> settings = (HashMap<String, String>) optionMenu
 				.getMenu().getSettings();
-		
+
 		/* Run the scan */
 		VictimScan vs = new VictimScan(settings, paths);
-		vs.execute();
+		if (vs.execute() == VictimScan.VULN_DETECTED) {
+			JOptionPane.showMessageDialog(null,
+					"A vulnerability was detected in your dependencies,"
+							+ "Please see the log for details.", "ALERT",
+
+					JOptionPane.ERROR_MESSAGE);
+			return VictimScan.VULN_DETECTED;
+		}
+		return 0;
+	}
+
+	protected ArrayList<IPath> getPaths() {
+		return paths;
+	}
+
+	protected void setPaths(ArrayList<IPath> pathset) {
+		paths = pathset;
+	}
+
+	protected OptionMenuRunnable getOptionMenu() {
+		return optionMenu;
+	}
+
+	protected void setOptionMenu(OptionMenuRunnable options) {
+		optionMenu = options;
 	}
 
 }
