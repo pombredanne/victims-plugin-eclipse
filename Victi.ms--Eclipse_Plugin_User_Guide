@@ -95,3 +95,14 @@ jdbcPass
 The password to use for the jdbc connection.
 default: "victims"
 
+Testing
+Tests must be run from within eclipse as an JUnit Plug-in Test.
+
+Test that default settings are applied correctly.   
+Result: Success
+
+System Testing
+Test that giving the project a jar containing a known vulnerability
+(that is also in the database) it will return a result which signifies this.
+
+Result: Success
