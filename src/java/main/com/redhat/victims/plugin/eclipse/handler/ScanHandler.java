@@ -129,6 +129,7 @@ public class ScanHandler extends AbstractHandler implements SettingsCallback {
 		return 0;
 	}
 
+	/* Setters and getters */
 	protected ArrayList<IPath> getPaths() {
 		return paths;
 	}

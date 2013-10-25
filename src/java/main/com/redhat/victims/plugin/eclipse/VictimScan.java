@@ -56,13 +56,15 @@ public class VictimScan {
 	public ExecutionContext ctx;
 	public ILog log;
 	private ArrayList<IPath> paths;
+	
 	/* Arbitrary number to signify a vulnerability was detected 
-	 * Mainly used for testing purposes.
-	*/
+	 * Mainly used for testing purposes.*/
 	public static int VULN_DETECTED = 9996667;
 	/* true after a single vulnerability is detected */
 	private static Boolean vulnsDetected = false;
+	
 	/**
+	 * Initialises the scan.
 	 * 
 	 * @param set
 	 *            Victims settings map
@@ -125,6 +127,7 @@ public class VictimScan {
 
 	/**
 	 * Controls the scanning of extracted dependencies from the eclipse project.
+	 * Main life-cycle of plugin.
 	 */
 	public int execute() {
 		VictimsResultCache cache = ctx.getCache();

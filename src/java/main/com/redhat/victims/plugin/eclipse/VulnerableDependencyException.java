@@ -43,6 +43,13 @@ public class VulnerableDependencyException extends VictimsException {
 	private String action;
 	private HashSet<String> cves;
 
+	/**
+	 * Initialisees an exception for catching vulnerable
+	 * dependencies.
+	 * @param fs FileStub containing details of java library
+	 * @param action Fingerprint or Metadata
+	 * @param cves CVEs containing this library
+	 */
 	public VulnerableDependencyException(FileStub fs, String action,
 			HashSet<String> cves) {
 		super(String.format("CVE: %s, File: %s", cves, fs.getId()));
