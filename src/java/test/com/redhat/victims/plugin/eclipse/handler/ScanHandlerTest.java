@@ -15,6 +15,13 @@ import com.redhat.victims.plugin.eclipse.mockCallbackHandler;
 
 public class ScanHandlerTest {
 
+	/**
+	 * Test the overall system. Submits a jar
+	 * that contains a vulnerability and expects
+	 * a return value that signifies a vulnerable
+	 * dependency.
+	 * @throws VictimsException
+	 */
 	@Test
 	public void testCallbackSettings() throws VictimsException {
 		ScanHandler handler = new ScanHandler();
